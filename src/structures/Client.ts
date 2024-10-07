@@ -11,7 +11,7 @@ import { logger } from "~/lib/logger";
 import type { Command } from "~/types/command";
 import type { Event } from "~/types/event";
 
-export default class ExtendedClient extends Client {
+export class ExtendedClient extends Client {
 	commands: Collection<unknown, Command>;
 	constructor() {
 		super({
@@ -41,7 +41,10 @@ export default class ExtendedClient extends Client {
 	private async registerCommands({
 		commands,
 		guild,
-	}: { commands: ApplicationCommandDataResolvable[]; guild?: string }) {
+	}: {
+		commands: ApplicationCommandDataResolvable[];
+		guild?: string;
+	}) {
 		if (guild) {
 			this.guilds.cache.get(guild)?.commands.set(commands);
 			logger.init(`Registering commands to ${guild}`);
@@ -80,5 +83,3 @@ export default class ExtendedClient extends Client {
 		});
 	}
 }
-
-export * from "discord.js";
