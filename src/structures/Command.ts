@@ -3,10 +3,10 @@ import type {
 	CommandInteractionOptionResolver,
 	SlashCommandBuilder,
 } from "discord.js";
-import type { ExtendedClient } from "~/structures/Client";
+import type DiscordClient from "~/structures/Client";
 
 interface RunOptions {
-	client: ExtendedClient;
+	client: DiscordClient;
 	interaction: CommandInteraction;
 	args: CommandInteractionOptionResolver;
 }

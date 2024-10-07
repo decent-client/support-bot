@@ -1,5 +1,4 @@
-import { Events } from "~/structures/Client";
-import type { Event } from "~/types/event";
+import { DiscordEvent } from "~/structures/Event";
 
 const replies = [
 	"what do you want",
@@ -14,11 +13,13 @@ const replies = [
 	"(╯°□°)╯︵ ┻━┻",
 ];
 
-export default {
-	event: Events.MessageCreate,
+export default new DiscordEvent({
+	event: "messageCreate",
 	listener: (message) => {
-		if (message.author.id !== message.client.user.id || !message.author.bot) {
-			if (message.mentions.has(message.client.user.id)) {
+		const { client } = message;
+
+		if (message.author.id !== client.user.id || !message.author.bot) {
+			if (message.mentions.has(client.user.id)) {
 				const randomReply = replies[Math.floor(Math.random() * replies.length)];
 
 				return message.reply({
@@ -30,4 +31,4 @@ export default {
 			}
 		}
 	},
-} satisfies Event<"messageCreate">;
+});

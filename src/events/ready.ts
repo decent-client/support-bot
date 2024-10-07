@@ -1,12 +1,12 @@
 import chalk from "chalk";
+import { ActivityType } from "discord.js";
 import { Logger } from "~/lib/logger";
-import { ActivityType, ChannelType, Events } from "~/structures/Client";
-import type { Event } from "~/types/event";
+import { DiscordEvent } from "~/structures/Event";
 
 const logger = new Logger();
 
-export default {
-	event: Events.ClientReady,
+export default new DiscordEvent({
+	event: "ready",
 	once: true,
 	listener: async (client) => {
 		logger.init(
@@ -22,16 +22,5 @@ export default {
 			],
 			status: "dnd",
 		});
-
-		setInterval(async () => {
-			const channel = client.channels.cache.get("1292517593952948274");
-			const pullRequests: [] = await fetch(
-				"https://api.github.com/repos/decent-client/launcher/pulls",
-			).then((response) => response.json());
-
-			if (channel && channel.type === ChannelType.GuildVoice) {
-				channel.setName(`Pull Requests: ${pullRequests.length}`);
-			}
-		}, 600000);
 	},
-} satisfies Event<"ready">;
+});

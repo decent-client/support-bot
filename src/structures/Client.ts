@@ -13,7 +13,7 @@ import type { Event } from "~/types/event";
 
 const logger = new Logger();
 
-export class ExtendedClient extends Client {
+export default class ExtendedClient extends Client {
 	commands: Collection<unknown, Command>;
 	constructor() {
 		super({

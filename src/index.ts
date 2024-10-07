@@ -1,4 +1,4 @@
-import DiscordClient, { Events } from "~/structures/Client";
+import DiscordClient from "~/structures/Client";
 
 export const client = new DiscordClient();
 

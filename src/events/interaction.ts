@@ -1,15 +1,12 @@
-import type ExtendedClient from "~/structures/Client";
-import {
-	type CommandInteractionOptionResolver,
-	Events,
-} from "~/structures/Client";
-import type { Event } from "~/types/event";
+import type { CommandInteractionOptionResolver } from "discord.js";
+import type DiscordClient from "~/structures/Client";
+import { DiscordEvent } from "~/structures/Event";
 
-export default {
-	event: Events.InteractionCreate,
+export default new DiscordEvent({
+	event: "interactionCreate",
 	listener: async (interaction) => {
 		if (interaction.isChatInputCommand()) {
-			const command = (interaction.client as ExtendedClient).commands.get(
+			const command = (interaction.client as DiscordClient).commands.get(
 				interaction.commandName,
 			);
 
@@ -29,7 +26,7 @@ export default {
 
 			try {
 				command.execute({
-					client: interaction.client as ExtendedClient,
+					client: interaction.client as DiscordClient,
 					interaction,
 					args: interaction.options as CommandInteractionOptionResolver,
 				});
@@ -50,4 +47,4 @@ export default {
 			}
 		}
 	},
-} satisfies Event<"interactionCreate">;
+});
