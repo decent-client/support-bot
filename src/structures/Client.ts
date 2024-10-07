@@ -7,9 +7,11 @@ import {
 	GatewayIntentBits,
 } from "discord.js";
 import { glob } from "glob";
-import { logger } from "~/lib/logger";
+import { Logger } from "~/lib/logger";
 import type { Command } from "~/types/command";
 import type { Event } from "~/types/event";
+
+const logger = new Logger();
 
 export default class ExtendedClient extends Client {
 	commands: Collection<unknown, Command>;

@@ -1,7 +1,9 @@
 import chalk from "chalk";
-import { logger } from "~/lib/logger";
+import { Logger } from "~/lib/logger";
 import { ActivityType, ChannelType, Events } from "~/structures/Client";
 import type { Event } from "~/types/event";
+
+const logger = new Logger();
 
 export default {
 	event: Events.ClientReady,
