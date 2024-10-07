@@ -1,4 +1,4 @@
-# support-bot
+<h1 align="center">Support Bot for Decent Client 🤖</h1>
 
 To install dependencies:
 
