@@ -23,14 +23,12 @@ export default new DiscordEvent({
 		}
 
 		setInterval(async () => {
-			const tags: { ref: string }[] = await fetch(
-				"https://api.github.com/repos/decent-client/launcher/git/refs/tags",
+			const release: { tag_name: string } = await fetch(
+				"https://api.github.com/repos/decent-client/launcher/releases/latest",
 			).then((response) => response.json());
 
 			if (channel && channel.type === ChannelType.GuildVoice) {
-				channel.setName(
-					`Release: ${tags.at(0)?.ref.replace(/refs\/tags\//gim, "")}`,
-				);
+				channel.setName(`Release: ${release.tag_name}`);
 			}
 		}, 600000);
 	},
