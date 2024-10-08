@@ -7,14 +7,13 @@ import {
 	GatewayIntentBits,
 } from "discord.js";
 import { glob } from "glob";
-import { Logger } from "~/lib/logger";
+import config from "~/lib/config";
 import type { Command } from "~/types/command";
 import type { Event } from "~/types/event";
 
-const logger = new Logger();
-
 export default class ExtendedClient extends Client {
-	commands: Collection<unknown, Command>;
+	public commands: Collection<unknown, Command>;
+
 	constructor() {
 		super({
 			intents: [
@@ -23,6 +22,7 @@ export default class ExtendedClient extends Client {
 				GatewayIntentBits.GuildPresences,
 				GatewayIntentBits.MessageContent,
 				GatewayIntentBits.GuildMessages,
+				GatewayIntentBits.GuildVoiceStates,
 			],
 		});
 
@@ -42,17 +42,13 @@ export default class ExtendedClient extends Client {
 
 	private async registerCommands({
 		commands,
-		guild,
 	}: {
 		commands: ApplicationCommandDataResolvable[];
-		guild?: string;
 	}) {
-		if (guild) {
-			this.guilds.cache.get(guild)?.commands.set(commands);
-			logger.init(`Registering commands to ${guild}`);
+		if (config.server) {
+			this.guilds.cache.get(config.server)?.commands.set(commands);
 		} else {
 			this.application?.commands.set(commands);
-			logger.init("Registering global commands");
 		}
 	}
 
@@ -61,6 +57,7 @@ export default class ExtendedClient extends Client {
 
 		for (const path of await glob("**/src/commands/**/*.ts")) {
 			const command: Command = await this.importFile(path);
+
 			if ("data" in command && "execute" in command) {
 				this.commands.set(command.data.name, command);
 				applicationCommands.push(command.data.toJSON());
@@ -77,11 +74,21 @@ export default class ExtendedClient extends Client {
 			});
 		}
 
-		this.once(Events.ClientReady, () => {
-			this.registerCommands({
-				commands: applicationCommands,
-				guild: process.env.GUILD_ID,
-			});
+		this.once("ready", () => {
+			try {
+				this.registerCommands({
+					commands: applicationCommands,
+				});
+			} finally {
+				if (config.server) {
+					const server = this.guilds.cache.get(config.server);
+					console.log(
+						`Registering commands to ${server?.name} (${config.server})`,
+					);
+				} else {
+					console.log("Registering commands (globally)");
+				}
+			}
 		});
 	}
 }

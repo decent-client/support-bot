@@ -1,7 +1,4 @@
 import type { ClientEvents } from "discord.js";
+import type { DiscordEvent } from "~/structures/Event";
 
-export type Event<Key extends keyof ClientEvents> = {
-	event: Key;
-	once?: boolean;
-	listener: (...args: ClientEvents[Key]) => unknown;
-};
+export type Event<Key extends keyof ClientEvents> = DiscordEvent<Key>;

@@ -1,5 +1,5 @@
 import DiscordClient from "~/structures/Client";
 
-export const client = new DiscordClient();
+const client = new DiscordClient();
 
 client.initialize();

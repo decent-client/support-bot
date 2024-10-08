@@ -1,15 +1,3 @@
-import type {
-	CommandInteraction,
-	CommandInteractionOptionResolver,
-	SlashCommandBuilder,
-} from "~/structures/Client";
-import type ExtendedClient from "~/structures/Client";
+import type { DiscordCommand } from "~/structures/Command";
 
-export type Command = {
-	data: SlashCommandBuilder;
-	execute: (options: {
-		client: ExtendedClient;
-		interaction: CommandInteraction;
-		args: CommandInteractionOptionResolver;
-	}) => unknown;
-};
+export type Command = DiscordCommand;
