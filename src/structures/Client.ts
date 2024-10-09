@@ -5,6 +5,7 @@ import {
 	Collection,
 	Events,
 	GatewayIntentBits,
+	Partials,
 } from "discord.js";
 import { glob } from "glob";
 import config from "~/lib/config";
@@ -23,7 +24,10 @@ export default class ExtendedClient extends Client {
 				GatewayIntentBits.MessageContent,
 				GatewayIntentBits.GuildMessages,
 				GatewayIntentBits.GuildVoiceStates,
+				GatewayIntentBits.GuildMessageReactions,
+				GatewayIntentBits.GuildEmojisAndStickers,
 			],
+			partials: [Partials.Message, Partials.Channel, Partials.Reaction],
 		});
 
 		this.commands = new Collection();
